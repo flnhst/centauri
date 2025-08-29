@@ -1,0 +1,73 @@
+#include <print>
+
+#include <reflective_runtime/r_class.h>
+#include <reflective_runtime/database.h>
+
+#include <antares/runtime.h>
+
+#include "centauri_generated/dotnet_amalgamation.h"
+
+void initialize_dotnet_runtime()
+{
+    const auto init_result = dotnet::runtime::initialize("dotnet/Centauri/bin/Debug/net9.0/Centauri.runtimeconfig.json");
+
+    if (!init_result)
+    {
+        std::println(stderr, "Failed to initialize .NET runtime.");
+
+        std::abort();
+    }
+
+    auto& runtime = dotnet::runtime::instance();
+
+    const auto load_antares_result = runtime.load_assembly("dotnet/Centauri/bin/Debug/net9.0/Antares.dll");
+
+    if (load_antares_result != dotnet::load_assembly_result::ok)
+    {
+        std::println(stderr, "Failed to load Antares.dll.");
+
+        std::abort();
+    }
+
+    const auto load_centauri_result = runtime.load_assembly("dotnet/Centauri/bin/Debug/net9.0/Centauri.dll");
+
+    if (load_centauri_result != dotnet::load_assembly_result::ok)
+    {
+        std::println(stderr, "Failed to load Centauri.dll.");
+
+        std::abort();
+    }
+
+    const auto retrieve_native_result = runtime.retrieve_native_entrypoints();
+
+    if (retrieve_native_result != dotnet::retrieve_native_entrypoints_result::ok)
+    {
+        std::println(stderr, "Failed to retrieve native entrypoints.");
+
+        std::abort();
+    }
+
+    runtime.set_managed_callbacks();
+}
+
+int main (int argc, char* argv[])
+{
+    std::println("Hello, World!");
+
+    initialize_dotnet_runtime();
+
+    const auto* entity_clazz = reflective::database::get_instance().get_class_by_name("entity");
+
+    if (entity_clazz == nullptr)
+    {
+        std::println(stderr, "Could not find class 'entity'.");
+
+        return 1;
+    }
+
+    auto instance = entity_clazz->create_instance();
+
+    entity_clazz->destroy_instance(instance);
+
+    return 0;
+}

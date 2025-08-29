@@ -1,0 +1,19 @@
+{
+    "$schema": "https://raw.githubusercontent.com/microsoft/vcpkg-tool/main/docs/vcpkg-configuration.schema.json",
+    "default-registry": {
+        "kind": "git",
+        "repository": "https://github.com/Microsoft/vcpkg",
+        "baseline": "8f28427e139dc155faa17ce0055dd612019866ba"
+    },
+    "registries": [
+        {
+            "kind": "git",
+            "repository": "git@github.com:flnhst/celaeno-registry.git",
+            "reference": "main",
+            "baseline": "cde1c35f2eaebe3cab5783dbae0b5c713aa88906",
+            "packages": [
+                "reflective"
+            ]
+        }
+    ]
+}

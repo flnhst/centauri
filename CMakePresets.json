@@ -1,0 +1,177 @@
+{
+    "version": 3,
+    "cmakeMinimumRequired": {
+        "major": 3,
+        "minor": 20,
+        "patch": 0
+    },
+    "configurePresets": [
+        {
+            "name": "Base",
+            "displayName": "Base",
+            "description": "Base",
+            "hidden": true,
+            "generator": "Ninja",
+            "cacheVariables": {
+                "CMAKE_TOOLCHAIN_FILE": "$env{VCPKG_ROOT}/scripts/buildsystems/vcpkg.cmake",
+                "VCPKG_INSTALLED_DIR": "${sourceDir}/vcpkg_install"
+            }
+        },
+        {
+            "name": "x64-Windows",
+            "displayName": "x64-Windows",
+            "description": "x64-Windows",
+            "hidden": true,
+            "inherits": "Base",
+            "generator": "Ninja",
+            "cacheVariables": {
+                "VCPKG_CHAINLOAD_TOOLCHAIN_FILE": "$env{CELAENO_TRIPLETS_ROOT}/llvm/llvm-windows.cmake",
+                "VCPKG_TARGET_TRIPLET": "x64-windows-llvm"
+            },
+            "condition": {
+                "type": "equals",
+                "lhs": "${hostSystemName}",
+                "rhs": "Windows"
+            }
+        },
+        {
+            "name": "arm64-Windows",
+            "displayName": "arm64-Windows",
+            "description": "arm64-Windows",
+            "hidden": true,
+            "inherits": "Base",
+            "generator": "Ninja",
+            "cacheVariables": {
+                "VCPKG_CHAINLOAD_TOOLCHAIN_FILE": "$env{CELAENO_TRIPLETS_ROOT}/llvm/llvm-windows.cmake",
+                "VCPKG_TARGET_TRIPLET": "arm64-windows-llvm"
+            },
+            "condition": {
+                "type": "equals",
+                "lhs": "${hostSystemName}",
+                "rhs": "Windows"
+            }
+        },
+        {
+            "name": "x64-Linux",
+            "displayName": "x64-Linux",
+            "description": "x64-Linux",
+            "hidden": true,
+            "inherits": "Base",
+            "generator": "Ninja",
+            "cacheVariables": {
+                "VCPKG_CHAINLOAD_TOOLCHAIN_FILE": "$env{CELAENO_TRIPLETS_ROOT}/llvm/llvm-linux-pic-lld.cmake",
+                "VCPKG_TARGET_TRIPLET": "x64-linux-llvm-dynamic"
+            },
+            "condition": {
+                "type": "equals",
+                "lhs": "${hostSystemName}",
+                "rhs": "Linux"
+            }
+        },
+        {
+            "name": "arm64-Linux",
+            "displayName": "arm64-Linux",
+            "description": "arm64-Linux",
+            "hidden": true,
+            "inherits": "Base",
+            "generator": "Ninja",
+            "cacheVariables": {
+                "VCPKG_CHAINLOAD_TOOLCHAIN_FILE": "$env{CELAENO_TRIPLETS_ROOT}/llvm/llvm-linux-pic-lld.cmake",
+                "VCPKG_TARGET_TRIPLET": "arm64-linux-llvm-dynamic"
+            },
+            "condition": {
+                "type": "equals",
+                "lhs": "${hostSystemName}",
+                "rhs": "Linux"
+            }
+        },
+        {
+            "name": "x64-Windows-Debug",
+            "displayName": "x64-Windows-Debug",
+            "description": "x64-Windows-Debug",
+            "inherits": "x64-Windows",
+            "binaryDir": "${sourceDir}/build_debug",
+            "cacheVariables": {
+                "CMAKE_BUILD_TYPE": "Debug",
+                "CMAKE_INSTALL_PREFIX": "${sourceDir}/install_debug"
+            }
+        },
+        {
+            "name": "x64-Windows-Release",
+            "displayName": "x64-Windows-Release",
+            "description": "x64-Windows-Release",
+            "inherits": "x64-Windows",
+            "binaryDir": "${sourceDir}/build_release",
+            "cacheVariables": {
+                "CMAKE_BUILD_TYPE": "Release",
+                "CMAKE_INSTALL_PREFIX": "${sourceDir}/install_release"
+            }
+        },
+        {
+            "name": "arm64-Windows-Debug",
+            "displayName": "arm64-Windows-Debug",
+            "description": "arm64-Windows-Debug",
+            "inherits": "arm64-Windows",
+            "binaryDir": "${sourceDir}/build_debug",
+            "cacheVariables": {
+                "CMAKE_BUILD_TYPE": "Debug",
+                "CMAKE_INSTALL_PREFIX": "${sourceDir}/install_debug"
+            }
+        },
+        {
+            "name": "arm64-Windows-Release",
+            "displayName": "arm64-Windows-Release",
+            "description": "arm64-Windows-Release",
+            "inherits": "arm64-Windows",
+            "binaryDir": "${sourceDir}/build_release",
+            "cacheVariables": {
+                "CMAKE_BUILD_TYPE": "Release",
+                "CMAKE_INSTALL_PREFIX": "${sourceDir}/install_release"
+            }
+        },
+        {
+            "name": "x64-Linux-Debug",
+            "displayName": "x64-Linux-Debug",
+            "description": "x64-Linux-Debug",
+            "inherits": "x64-Linux",
+            "binaryDir": "${sourceDir}/build_debug",
+            "cacheVariables": {
+                "CMAKE_BUILD_TYPE": "Debug",
+                "CMAKE_INSTALL_PREFIX": "${sourceDir}/install_debug"
+            }
+        },
+        {
+            "name": "x64-Linux-Release",
+            "displayName": "x64-Linux-Release",
+            "description": "x64-Linux-Release",
+            "inherits": "x64-Linux",
+            "binaryDir": "${sourceDir}/build_release",
+            "cacheVariables": {
+                "CMAKE_BUILD_TYPE": "Release",
+                "CMAKE_INSTALL_PREFIX": "${sourceDir}/install_release"
+            }
+        },
+        {
+            "name": "arm64-Linux-Debug",
+            "displayName": "arm64-Linux-Debug",
+            "description": "arm64-Linux-Debug",
+            "inherits": "arm64-Linux",
+            "binaryDir": "${sourceDir}/build_debug",
+            "cacheVariables": {
+                "CMAKE_BUILD_TYPE": "Debug",
+                "CMAKE_INSTALL_PREFIX": "${sourceDir}/install_debug"
+            }
+        },
+        {
+            "name": "arm64-Linux-Release",
+            "displayName": "arm64-Linux-Release",
+            "description": "arm64-Linux-Release",
+            "inherits": "arm64-Linux",
+            "binaryDir": "${sourceDir}/build_release",
+            "cacheVariables": {
+                "CMAKE_BUILD_TYPE": "Release",
+                "CMAKE_INSTALL_PREFIX": "${sourceDir}/install_release"
+            }
+        }
+    ]
+}
