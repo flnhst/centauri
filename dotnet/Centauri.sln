@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Centauri", "Centauri\Centau
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Centauri.Test", "Centauri.Test\Centauri.Test.csproj", "{05E42407-19CD-4101-A3BC-2B5E90643606}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Centauri.SourceGenerators", "Centauri.SourceGenerators\Centauri.SourceGenerators.csproj", "{78B2B44B-5DC4-44FA-9984-14E9312EB72C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -41,6 +43,18 @@ Global
 		{05E42407-19CD-4101-A3BC-2B5E90643606}.Release|x64.Build.0 = Release|Any CPU
 		{05E42407-19CD-4101-A3BC-2B5E90643606}.Release|x86.ActiveCfg = Release|Any CPU
 		{05E42407-19CD-4101-A3BC-2B5E90643606}.Release|x86.Build.0 = Release|Any CPU
+		{78B2B44B-5DC4-44FA-9984-14E9312EB72C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{78B2B44B-5DC4-44FA-9984-14E9312EB72C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{78B2B44B-5DC4-44FA-9984-14E9312EB72C}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{78B2B44B-5DC4-44FA-9984-14E9312EB72C}.Debug|x64.Build.0 = Debug|Any CPU
+		{78B2B44B-5DC4-44FA-9984-14E9312EB72C}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{78B2B44B-5DC4-44FA-9984-14E9312EB72C}.Debug|x86.Build.0 = Debug|Any CPU
+		{78B2B44B-5DC4-44FA-9984-14E9312EB72C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{78B2B44B-5DC4-44FA-9984-14E9312EB72C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{78B2B44B-5DC4-44FA-9984-14E9312EB72C}.Release|x64.ActiveCfg = Release|Any CPU
+		{78B2B44B-5DC4-44FA-9984-14E9312EB72C}.Release|x64.Build.0 = Release|Any CPU
+		{78B2B44B-5DC4-44FA-9984-14E9312EB72C}.Release|x86.ActiveCfg = Release|Any CPU
+		{78B2B44B-5DC4-44FA-9984-14E9312EB72C}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

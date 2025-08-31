@@ -48,6 +48,10 @@ void initialize_dotnet_runtime()
     }
 
     runtime.set_managed_callbacks();
+
+    dotnet::runtime::set_tracing(true);
+
+    initialize_centauri_generated_dotnet_bindings();
 }
 
 int main (int argc, char* argv[])

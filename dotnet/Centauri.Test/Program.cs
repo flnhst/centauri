@@ -1,8 +1,5 @@
-﻿// See https://aka.ms/new-console-template for more information
+﻿using Centauri.Generated;
 
-Console.WriteLine("Hello, World!");
+Console.WriteLine("Doing testing stuff.");
 
-foreach (var name in TestGeneratedClass.ListOfDeclarationNames)
-{
-    Console.WriteLine(name);
-}
+Console.WriteLine("Done.");

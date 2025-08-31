@@ -12,8 +12,8 @@ entity::~entity()
     std::println("entity::~entity(): called.");
 }
 
-float entity::test(int a, int c, entity* entity_ptr)
+void entity::update()
 {
-    return 0.0f;
+    std::println("entity::update(): called.");
 }
 
