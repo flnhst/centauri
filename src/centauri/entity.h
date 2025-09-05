@@ -19,6 +19,7 @@ public:
     entity& operator=(const entity& orig) = delete;
     entity& operator=(entity&& orig) = delete;
 
+    // [Method]
     virtual void update();
 
 protected:

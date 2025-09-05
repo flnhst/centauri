@@ -5,6 +5,8 @@
 
 #include <antares/runtime.h>
 
+#include "entity.h"
+
 #include "centauri_generated/dotnet_amalgamation.h"
 
 void initialize_dotnet_runtime()
@@ -59,19 +61,6 @@ int main (int argc, char* argv[])
     std::println("Hello, World!");
 
     initialize_dotnet_runtime();
-
-    const auto* entity_clazz = reflective::database::get_instance().get_class_by_name("entity");
-
-    if (entity_clazz == nullptr)
-    {
-        std::println(stderr, "Could not find class 'entity'.");
-
-        return 1;
-    }
-
-    auto instance = entity_clazz->create_instance();
-
-    entity_clazz->destroy_instance(instance);
 
     return 0;
 }

@@ -3,7 +3,7 @@ using System.Reflection;
 using Scriban;
 using Scriban.Runtime;
 
-namespace Antares.SourceGenerators;
+namespace Centauri.SourceGenerators;
 
 public static class DateTimeOffsetFunctions
 {
@@ -27,7 +27,7 @@ public static class TemplateHelper
     {
         var assembly = Assembly.GetExecutingAssembly();
 
-        var resourceName = $"Antares.SourceGenerators.Templates.{name}.scriban";
+        var resourceName = $"Centauri.SourceGenerators.Templates.{name}.scriban";
 
         using var resourceStream = assembly.GetManifestResourceStream(resourceName);
 

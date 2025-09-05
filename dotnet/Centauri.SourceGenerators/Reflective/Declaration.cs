@@ -1,6 +1,6 @@
 ﻿using System.Text.Json.Serialization;
 
-namespace Antares.SourceGenerators.Reflective;
+namespace Centauri.SourceGenerators.Reflective;
 
 [JsonDerivedType(typeof(NamespaceDeclaration), "namespace")]
 [JsonDerivedType(typeof(ClassDeclaration), "class")]

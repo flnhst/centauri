@@ -1,6 +1,6 @@
 ﻿using System.Text.Json.Serialization;
 
-namespace Antares.SourceGenerators.Reflective;
+namespace Centauri.SourceGenerators.Reflective;
 
 public enum DeclarationClass
 {

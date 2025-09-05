@@ -1,7 +1,7 @@
 ﻿using System.Text.Json;
 using System.Text.Json.Serialization;
 
-namespace Antares.SourceGenerators.Convertors;
+namespace Centauri.SourceGenerators.Converters;
 
 public class UnixTimestampConverter : JsonConverter<DateTimeOffset>
 {

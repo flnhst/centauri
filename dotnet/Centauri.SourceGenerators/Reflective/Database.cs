@@ -1,7 +1,7 @@
 ﻿using System.Text.Json.Serialization;
-using Antares.SourceGenerators.Convertors;
+using Centauri.SourceGenerators.Converters;
 
-namespace Antares.SourceGenerators.Reflective;
+namespace Centauri.SourceGenerators.Reflective;
 
 public class Database
 {

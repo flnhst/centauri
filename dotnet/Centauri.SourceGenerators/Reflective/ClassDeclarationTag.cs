@@ -1,4 +1,4 @@
-﻿namespace Antares.SourceGenerators.Reflective;
+﻿namespace Centauri.SourceGenerators.Reflective;
 
 public enum ClassDeclarationTag
 {

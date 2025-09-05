@@ -1,6 +1,6 @@
 ﻿using System.Security.Cryptography.X509Certificates;
 
-namespace Antares.SourceGenerators.Reflective;
+namespace Centauri.SourceGenerators.Reflective;
 
 public enum DeclarationVisibility
 {

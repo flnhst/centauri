@@ -1,0 +1,8 @@
+using Centauri;
+
+namespace {{ db.project_name | to_camel_case }}.Generated;
+
+public class {{ scriptable_class.name | to_camel_case }} : CentauriObject
+{
+
+}
