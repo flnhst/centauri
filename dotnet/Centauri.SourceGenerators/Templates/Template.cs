@@ -2,7 +2,7 @@
 using Centauri.SourceGenerators.Reflective;
 using Microsoft.CodeAnalysis;
 
-namespace Centauri.SourceGenerators;
+namespace Centauri.SourceGenerators.Templates;
 
 public abstract class Template(TextWriter writer) : IDisposable
 {
@@ -159,6 +159,13 @@ public abstract class Template(TextWriter writer) : IDisposable
     protected void EndMethod()
     {
         EndScopeBlock();
+    }
+
+    protected void EmitCommentHeader(Database database)
+    {
+        EmitCommentLine($"Reflective database was generated on: {database.GeneratedOn:O}");
+        EmitCommentLine($"This file was generated on:           {DateTime.UtcNow:O}");
+        EmitLine();
     }
 
     private string AccessibilityToString(Accessibility accessibility) =>

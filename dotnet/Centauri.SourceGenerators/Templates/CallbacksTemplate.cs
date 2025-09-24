@@ -3,14 +3,13 @@ using static Centauri.SourceGenerators.DeclarationFunctions;
 using static Centauri.SourceGenerators.StringFunctions;
 using static Centauri.SourceGenerators.FunctionDeclarationFunctions;
 
-namespace Centauri.SourceGenerators;
+namespace Centauri.SourceGenerators.Templates;
 
 public class CallbacksTemplate(TextWriter writer, IList<ClassDeclaration> scriptableClasses) : Template(writer)
 {
     public override void Render(Database database)
     {
-        EmitCommentLine($"Reflective database was generated on: {database.GeneratedOn:O}");
-        EmitLine();
+        EmitCommentHeader(database);
         EmitFileScopedNamespace($"{ToCamelCase(database.ProjectName)}.Generated");
         EmitLine();
         BeginClass("Callbacks");

@@ -3,14 +3,13 @@ using Microsoft.CodeAnalysis;
 using static Centauri.SourceGenerators.DeclarationFunctions;
 using static Centauri.SourceGenerators.StringFunctions;
 
-namespace Centauri.SourceGenerators;
+namespace Centauri.SourceGenerators.Templates;
 
 public class ManagedEntrypointsTemplate(TextWriter writer, IList<ClassDeclaration> scriptableClasses) : Template(writer)
 {
     public override void Render(Database database)
     {
-        EmitCommentLine($"Reflective database was generated on: {database.GeneratedOn:O}");
-        EmitLine();
+        EmitCommentHeader(database);
         EmitUsing("System.Runtime.InteropServices");
         EmitLine();
         EmitFileScopedNamespace($"{ToCamelCase(database.ProjectName)}.Generated");
