@@ -1,3 +1,5 @@
+// Reflective database was generated on: {{ db.generated_on | iso8601 }}
+
 using Centauri;
 
 namespace {{ db.project_name | to_camel_case }}.Generated;

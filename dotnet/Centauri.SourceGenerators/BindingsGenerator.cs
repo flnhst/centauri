@@ -27,9 +27,11 @@ public class BindingsGenerator : IIncrementalGenerator
 
         var db = DeserializeReflectiveDatabase(reflectiveDbJson);
 
-        AddNativeEntrypointsSource(context, db);
+        AddTemplateSource<ManagedEntrypointsTemplate>(context, db, "ManagedEntrypoints", GetScriptableClasses(db).ToList());
 
         AddScriptableClassSources(context, db);
+
+        AddTemplateSource<CallbacksTemplate>(context, db, "Callbacks", GetScriptableClasses(db).ToList());
     }
 
     private static Database DeserializeReflectiveDatabase(string reflectiveDbJson)
@@ -55,22 +57,15 @@ public class BindingsGenerator : IIncrementalGenerator
         return db;
     }
 
-    private static void AddNativeEntrypointsSource(SourceProductionContext context, Database db)
-    {
-        var renderedCode = TemplateHelper.RenderTemplate("NativeEntrypoints", new
-        {
-            Db = db
-        });
-
-        context.AddSource($"NativeEntrypoints.g.cs", SourceText.From(renderedCode, Encoding.UTF8));
-    }
-
-    private static void AddScriptableClassSources(SourceProductionContext context, Database db)
-    {
-        var scriptableClasses = db.Classes
+    private static IEnumerable<ClassDeclaration> GetScriptableClasses(Database db) =>
+        db.Classes
             .Where(clazz =>
                 clazz.Attributes.Any(attr => attr.Name == "Scriptable") &&
                 clazz.ShouldBeReflected);
+
+    private static void AddScriptableClassSources(SourceProductionContext context, Database db)
+    {
+        var scriptableClasses = GetScriptableClasses(db);
 
         foreach (var scriptableClass in scriptableClasses)
         {
@@ -81,13 +76,24 @@ public class BindingsGenerator : IIncrementalGenerator
 
             var name = StringFunctions.ToCamelCase(scriptableClass.Name);
 
-            var renderedCode = TemplateHelper.RenderTemplate("ScriptableClass", new
-            {
-                Db = db,
-                ScriptableClass = scriptableClass
-            });
-
-            context.AddSource($"{name}.g.cs", SourceText.From(renderedCode, Encoding.UTF8));
+            AddTemplateSource<ScriptableClassTemplate>(context, db, name, scriptableClass);
         }
+    }
+
+    private static void AddTemplateSource<T>(SourceProductionContext context, Database db, string name, params object[] parameters) where T : Template
+    {
+        using var stringWriter = new StringWriter();
+
+        var parametersList = new List<object> { stringWriter };
+
+        parametersList.AddRange(parameters);
+
+        var template = Activator.CreateInstance(typeof(T), parametersList.ToArray()) as T;
+
+        template!.Render(db);
+
+        stringWriter.Flush();
+
+        context.AddSource($"{name}.g.cs", SourceText.From(stringWriter.ToString(), Encoding.UTF8));
     }
 }

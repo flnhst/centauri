@@ -40,9 +40,9 @@ void initialize_dotnet_runtime()
         std::abort();
     }
 
-    const auto retrieve_native_result = runtime.retrieve_native_entrypoints();
+    const auto retrieve_native_result = runtime.retrieve_managed_entrypoints();
 
-    if (retrieve_native_result != dotnet::retrieve_native_entrypoints_result::ok)
+    if (retrieve_native_result != dotnet::retrieve_managed_entrypoints_result::ok)
     {
         std::println(stderr, "Failed to retrieve native entrypoints.");
 

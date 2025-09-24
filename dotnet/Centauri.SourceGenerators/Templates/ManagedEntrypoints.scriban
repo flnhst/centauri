@@ -1,0 +1,31 @@
+// Reflective database was generated on: {{ db.generated_on | iso8601 }}
+
+using System.Runtime.InteropServices;
+
+namespace {{ db.project_name | to_camel_case }}.Generated;
+
+public static class ManagedEntrypoints
+{
+    [UnmanagedCallersOnly]
+    public static void InitializeBindings(IntPtr nativeCallbacksPtr)
+    {
+        Console.WriteLine("Hello, from generated .NET!");
+
+        var handle = GCHandle.FromIntPtr(nativeCallbacksPtr);
+
+        if (handle.Target is not IDictionary<string, IntPtr> nativeCallbacks)
+        {
+            throw new Exception("Invalid argument.");
+        }
+
+        {{- for scriptable_class in scriptable_classes }}
+        {
+            var fptrRaw = nativeCallbacks["{{ scriptable_class | generate_dotnet_new_name }}"];
+            var callbackDelegate = Marshal.GetDelegateForFunctionPointer<Callbacks.{{ scriptable_class | generate_dotnet_delegate_name }}>(fptrRaw);
+            Callbacks.{{ scriptable_class | generate_dotnet_callback_name }} = callbackDelegate;
+        }
+        {{- end }}
+
+
+    }
+}
