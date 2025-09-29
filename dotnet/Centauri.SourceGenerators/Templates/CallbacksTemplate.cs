@@ -35,7 +35,7 @@ public class CallbacksTemplate(TextWriter writer, IList<ClassDeclaration> script
             return;
         }
 
-        EmitLine($"public delegate IntPtr {GenerateDotnetDelegateName(scriptableClass)}(IntPtr objHandle{GenerateParameterList(constructor.Parameters, true)});");
-        EmitLine($"public static {GenerateDotnetDelegateName(scriptableClass)} {GenerateDotnetCallbackName(scriptableClass)} = (_{GenerateParameterIgnoredList(constructor.Parameters, true)}) => throw new NotImplementedException();");
+        EmitLine($"public delegate IntPtr {GenerateDotnetDelegateName(scriptableClass)}(IntPtr objHandle{GenerateNativeInterfaceParameterList(constructor.Parameters, true)});");
+        EmitLine($"public static {GenerateDotnetDelegateName(scriptableClass)} {GenerateDotnetCallbackName(scriptableClass)} = (_{GenerateNativeInterfaceParameterIgnoredList(constructor.Parameters, true)}) => throw new NotImplementedException();");
     }
 }

@@ -1,12 +1,67 @@
 from typing import Any
 
 import pyreflective
+from pyreflective import SPDLOG_INFO
+
+pyreflective.SPDLOG_INFO("YO!!!! OVER HERE!!!!!!!!!!!!!!")
+pyreflective.SPDLOG_INFO("YO!!!! OVER HERE!!!!!!!!!!!!!!")
+pyreflective.SPDLOG_INFO("YO!!!! OVER HERE!!!!!!!!!!!!!!")
+
+def reflective_type_to_simple_type(r_type: pyreflective.Type) -> str:
+    if r_type.is_builtin():
+        match r_type.name():
+            case "float":
+                return "float"
+            case "char":
+                return "char"
+            case "int":
+                return "int"
+            case "unsigned long long":
+                return "unsigned long long"
+            case "void":
+                return "void"
+
+    if r_type.is_pointer() and r_type.get_inner_type() is not None:
+        return f"{reflective_type_to_simple_type(r_type.get_inner_type())}*"
+
+    if r_type.kind_c_str() == "template_specialization" and r_type.name() == "::std::basic_string":
+        return f"string"
+
+    if r_type.get_inner_type() is not None:
+        return reflective_type_to_simple_type(r_type.get_inner_type())
+
+    raise Exception(f"Unknown type '{r_type.kind_c_str()}' '{r_type.name()}' '{r_type.to_string()}' '{r_type.to_string_slug()}'")
 
 def generate_dotnet_class_name(scriptable_class: pyreflective.ClassDeclaration):
     return "dotnet_{}".format(scriptable_class.fully_qualified_name_slug())
 
-def generate_dotnet_new_name(scriptable_class: pyreflective.ClassDeclaration):
-    return "dotnet_new_{}".format(scriptable_class.fully_qualified_name_slug())
+def generate_dotnet_new_name(scriptable_class: pyreflective.ClassDeclaration, constructor: pyreflective.ConstructorDeclaration):
+    return "dotnet_new_{}_{}".format(constructor.order(), scriptable_class.fully_qualified_name_slug())
+
+def generate_native_interface_parameter_list(parameter_types: pyreflective.VectorPairStringType, begin_with_comma: bool):
+    parameters_str = ""
+
+    if begin_with_comma:
+        parameters_str += ", "
+
+    parameter_count = 0
+    for pair in parameter_types:
+        parameter_type = pair[1]
+
+        pyreflective.SPDLOG_INFO("Doing parameter type {} = {}".format(parameter_type.to_string(), reflective_type_to_simple_type(parameter_type)))
+        parameters_str += f"/*{reflective_type_to_simple_type(parameter_type)}*/"
+
+        if reflective_type_to_simple_type(parameter_type) == "string":
+            parameters_str += f"const char* argPtr{parameter_count}, int argLength{parameter_count}"
+        else:
+            parameters_str += f"{parameter_type.to_string()} ar{parameter_count}"
+
+        if parameter_count != len(parameter_types) - 1:
+            parameters_str += ", "
+
+        parameter_count += 1
+
+    return parameters_str
 
 def snake_case_to_camel_case(sstr):
     s2 = sstr.split('_')
@@ -108,11 +163,15 @@ class DotnetAmalgamationTemplate(pyreflective.SourceTemplate):
         self.emit_line("auto callback_dict = dotnet::make_new<dotnet::string_intptr_dictionary>();")
 
         for scriptable_class in scriptable_classes:
-            self.emit_line(f"callback_dict->set_element(\"{generate_dotnet_new_name(scriptable_class)}\", reinterpret_cast<std::intptr_t>(&{generate_dotnet_new_name(scriptable_class)}));")
+            for constructor in scriptable_class.get_constructors():
+                if constructor.should_be_reflected():
+                    self.emit_line(f"callback_dict->set_element(\"{generate_dotnet_new_name(scriptable_class, constructor)}\", reinterpret_cast<std::intptr_t>(&{generate_dotnet_new_name(scriptable_class, constructor)}));")
 
         self.emit_line("initialize_bindings_result.value()(callback_dict.get_handle());")
 
         self.end_scope_block()
+
+        return True
 
     def render_dotnet_class(self, scriptable_class: pyreflective.ClassDeclaration):
         self.begin_class(generate_dotnet_class_name(scriptable_class), scriptable_class.fully_qualified_name())
@@ -123,11 +182,19 @@ class DotnetAmalgamationTemplate(pyreflective.SourceTemplate):
 
         self.end_class()
 
-        self.emit_line(f"{generate_dotnet_class_name(scriptable_class)}* {generate_dotnet_new_name(scriptable_class)}(dotnet::object_handle_t obj)")
-        self.begin_scope_block()
-        self.emit_line(f"std::println(\"Hello from '{generate_dotnet_new_name(scriptable_class)}'!\");")
-        self.emit_line(f"return new {generate_dotnet_class_name(scriptable_class)}();")
-        self.end_scope_block()
+        for constructor in scriptable_class.get_constructors():
+            if constructor.should_be_reflected():
+                pyreflective.SPDLOG_INFO("HELLLO!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
+                pyreflective.SPDLOG_INFO("HELLLO!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
+                pyreflective.SPDLOG_INFO("HELLLO!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
+                self.emit_comment("Hello!")
+                self.emit_line(f"{generate_dotnet_class_name(scriptable_class)}* {generate_dotnet_new_name(scriptable_class, constructor)}(dotnet::object_handle_t obj{generate_native_interface_parameter_list(constructor.get_parameters(), True)})")
+                self.begin_scope_block()
+                self.emit_line(f"return new {generate_dotnet_class_name(scriptable_class)}();")
+                self.end_scope_block()
+
+    def render_dotnet_class_new(self, scriptable_class: pyreflective.ClassDeclaration, constructor: pyreflective.ConstructorDeclaration):
+        pass
 
 
 class DotnetAmalgamationHeaderTemplate(pyreflective.SourceTemplate):
@@ -152,6 +219,8 @@ class DotnetAmalgamationHeaderTemplate(pyreflective.SourceTemplate):
         self.emit_line_empty()
 
         self.end_header_guard()
+
+        return True
 
 
 class DotnetFooterHeaderTemplate(pyreflective.SourceTemplate):

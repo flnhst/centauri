@@ -6,3 +6,4 @@ vcpkg_install/
 CMakeUserPresets.json
 *.user
 venv/
+.venv/
