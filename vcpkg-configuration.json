@@ -10,9 +10,10 @@
             "kind": "git",
             "repository": "git@github.com:flnhst/celaeno-registry.git",
             "reference": "main",
-            "baseline": "cde1c35f2eaebe3cab5783dbae0b5c713aa88906",
+            "baseline": "76b998a79a020628f291d0724ec03e9c0fc275cd",
             "packages": [
-                "reflective"
+                "reflective",
+                "llvm"
             ]
         }
     ]
