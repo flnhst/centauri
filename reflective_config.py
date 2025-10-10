@@ -3,10 +3,6 @@ from typing import Any
 import pyreflective
 from pyreflective import SPDLOG_INFO
 
-pyreflective.SPDLOG_INFO("YO!!!! OVER HERE!!!!!!!!!!!!!!")
-pyreflective.SPDLOG_INFO("YO!!!! OVER HERE!!!!!!!!!!!!!!")
-pyreflective.SPDLOG_INFO("YO!!!! OVER HERE!!!!!!!!!!!!!!")
-
 def reflective_type_to_simple_type(r_type: pyreflective.Type) -> str:
     if r_type.is_builtin():
         match r_type.name():
@@ -24,7 +20,7 @@ def reflective_type_to_simple_type(r_type: pyreflective.Type) -> str:
     if r_type.is_pointer() and r_type.get_inner_type() is not None:
         return f"{reflective_type_to_simple_type(r_type.get_inner_type())}*"
 
-    if r_type.kind_c_str() == "template_specialization" and r_type.name() == "::std::basic_string":
+    if r_type.kind_c_str() == "template_specialization" and (r_type.name() == "::std::basic_string" or r_type.name() == "::std::__cxx11::basic_string"):
         return f"string"
 
     if r_type.get_inner_type() is not None:
@@ -184,9 +180,6 @@ class DotnetAmalgamationTemplate(pyreflective.SourceTemplate):
 
         for constructor in scriptable_class.get_constructors():
             if constructor.should_be_reflected():
-                pyreflective.SPDLOG_INFO("HELLLO!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
-                pyreflective.SPDLOG_INFO("HELLLO!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
-                pyreflective.SPDLOG_INFO("HELLLO!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
                 self.emit_comment("Hello!")
                 self.emit_line(f"{generate_dotnet_class_name(scriptable_class)}* {generate_dotnet_new_name(scriptable_class, constructor)}(dotnet::object_handle_t obj{generate_native_interface_parameter_list(constructor.get_parameters(), True)})")
                 self.begin_scope_block()
